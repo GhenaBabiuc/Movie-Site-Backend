@@ -18,4 +18,9 @@ public class DefaultFilmService implements FilmService {
     public List<Film> getAllVideos() {
         return videoDao.getAllFilms();
     }
+
+    @Override
+    public Film getFilmById(Long id) {
+        return videoDao.getFilmById(id);
+    }
 }

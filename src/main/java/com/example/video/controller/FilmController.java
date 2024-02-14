@@ -4,6 +4,7 @@ import com.example.video.model.movie.Film;
 import com.example.video.service.FilmService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,9 +18,15 @@ public class FilmController {
     @Resource
     private FilmService filmService;
 
-    @GetMapping("/allFilms")
+    @GetMapping("/all")
     public ResponseEntity<List<Film>> getAllVideos() {
-        List<Film> videos = filmService.getAllVideos();
-        return ResponseEntity.ok(videos);
+        List<Film> films = filmService.getAllVideos();
+        return ResponseEntity.ok(films);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Film> getFilmById(@PathVariable Long id) {
+        Film film = filmService.getFilmById(id);
+        return ResponseEntity.ok(film);
     }
 }

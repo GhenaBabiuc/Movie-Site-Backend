@@ -18,4 +18,11 @@ public class DefaultFilmDao implements FilmDao {
     public List<Film> getAllFilms() {
         return entityManager.createQuery("SELECT f FROM Film f", Film.class).getResultList();
     }
+
+    @Override
+    public Film getFilmById(Long id) {
+        return entityManager.createQuery("SELECT f FROM Film f WHERE f.id = :id", Film.class)
+                .setParameter("id", id)
+                .getSingleResult();
+    }
 }

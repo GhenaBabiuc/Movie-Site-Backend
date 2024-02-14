@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface FilmDao {
     List<Film> getAllFilms();
+
+    Film getFilmById(Long id);
 }

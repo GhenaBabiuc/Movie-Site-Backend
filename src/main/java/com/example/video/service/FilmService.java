@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface FilmService {
     List<Film> getAllVideos();
+
+    Film getFilmById(Long id);
 }
