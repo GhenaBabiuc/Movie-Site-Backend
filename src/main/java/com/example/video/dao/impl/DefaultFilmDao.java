@@ -24,7 +24,7 @@ public class DefaultFilmDao implements FilmDao {
         CriteriaQuery<Film> filmCriteriaQuery = criteriaBuilder.createQuery(Film.class);
         Root<Film> filmRoot = filmCriteriaQuery.from(Film.class);
 
-        filmRoot.fetch("genres", JoinType.LEFT);
+//        filmRoot.fetch("genres", JoinType.LEFT);
 
         filmCriteriaQuery.orderBy(criteriaBuilder.asc(filmRoot.get("id")));
 
@@ -33,8 +33,14 @@ public class DefaultFilmDao implements FilmDao {
 
     @Override
     public Film getFilmById(Long id) {
-        return entityManager.createQuery("SELECT f FROM Film f WHERE f.id = :id", Film.class)
-                .setParameter("id", id)
-                .getSingleResult();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Film> criteriaQuery = criteriaBuilder.createQuery(Film.class);
+        Root<Film> filmRoot = criteriaQuery.from(Film.class);
+
+//        filmRoot.fetch("genres", JoinType.LEFT);
+
+        criteriaQuery.where(criteriaBuilder.equal(filmRoot.get("id"), id));
+
+        return entityManager.createQuery(criteriaQuery).getSingleResult();
     }
 }

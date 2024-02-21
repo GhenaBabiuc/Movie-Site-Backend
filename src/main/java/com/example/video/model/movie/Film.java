@@ -43,7 +43,7 @@ public class Film {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "film_genres", schema = "movie", joinColumns = {@JoinColumn(name = "film_id")}, inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> genres;
 }
