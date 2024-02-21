@@ -6,6 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
@@ -16,7 +20,15 @@ public class DefaultFilmDao implements FilmDao {
 
     @Override
     public List<Film> getAllFilms() {
-        return entityManager.createQuery("SELECT f FROM Film f", Film.class).getResultList();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Film> filmCriteriaQuery = criteriaBuilder.createQuery(Film.class);
+        Root<Film> filmRoot = filmCriteriaQuery.from(Film.class);
+
+        filmRoot.fetch("genres", JoinType.LEFT);
+
+        filmCriteriaQuery.orderBy(criteriaBuilder.asc(filmRoot.get("id")));
+
+        return entityManager.createQuery(filmCriteriaQuery).getResultList();
     }
 
     @Override

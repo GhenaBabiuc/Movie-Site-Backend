@@ -1,12 +1,17 @@
 package com.example.video.model.movie;
 
+import com.example.video.jackson.LocalDateDeserializer;
+import com.example.video.jackson.LocalDateSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -24,9 +29,10 @@ public class Film {
     @Column(name = "title", nullable = false)
     private String title;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     @Column(name = "release_date")
-    @Temporal(TemporalType.DATE)
-    private Date releaseDate;
+    private LocalDate releaseDate;
 
     @Column(name = "director")
     private String director;
@@ -37,6 +43,7 @@ public class Film {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "genre")
-    private String genre;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "film_genres", schema = "movie", joinColumns = {@JoinColumn(name = "film_id")}, inverseJoinColumns = {@JoinColumn(name = "genre_id")})
+    private Set<Genre> genres;
 }

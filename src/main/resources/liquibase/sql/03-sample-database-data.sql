@@ -1,13 +1,11 @@
 --liquibase formatted sql
 
 --changeset gbabiuc:insert-films-table splitStatements:false
-INSERT INTO movie.films (title, release_date, director, rating, description, genre)
+INSERT INTO movie.films (title, release_date, director, rating, description)
 VALUES ('The Shawshank Redemption', '1994-09-23', 'Frank Darabont', 9.3,
-        'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
-        'Drama'),
+        'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.'),
        ('The Godfather', '1972-03-24', 'Francis Ford Coppola', 9.2,
-        'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.',
-        'Crime, Drama');
+        'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.');
 
 --changeset gbabiuc:insert-actors-table splitStatements:false
 INSERT INTO movie.actors (full_name, birth_date, biography)
