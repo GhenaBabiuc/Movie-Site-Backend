@@ -55,3 +55,7 @@ CREATE TABLE IF NOT EXISTS movie.film_genres
     FOREIGN KEY (film_id) REFERENCES movie.films (id),
     FOREIGN KEY (genre_id) REFERENCES movie.genres (id)
 );
+
+--changeset gbabiuc:adding-cover_ur-to-films-table splitStatements:false
+ALTER TABLE movie.films
+    ADD COLUMN cover_url VARCHAR(255);

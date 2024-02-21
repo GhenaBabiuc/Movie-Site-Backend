@@ -26,6 +26,9 @@ public class Film {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "cover_url")
+    private String coverUrl;
+
     @Column(name = "title", nullable = false)
     private String title;
 
