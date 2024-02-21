@@ -26,7 +26,7 @@ public class DefaultFilmDao implements FilmDao {
 
 //        filmRoot.fetch("genres", JoinType.LEFT);
 
-        filmCriteriaQuery.orderBy(criteriaBuilder.asc(filmRoot.get("id")));
+        filmCriteriaQuery.orderBy(criteriaBuilder.desc(filmRoot.get("rating")));
 
         return entityManager.createQuery(filmCriteriaQuery).getResultList();
     }
