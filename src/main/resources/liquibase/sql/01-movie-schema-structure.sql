@@ -59,3 +59,8 @@ CREATE TABLE IF NOT EXISTS movie.film_genres
 --changeset gbabiuc:adding-cover_ur-to-films-table splitStatements:false
 ALTER TABLE movie.films
     ADD COLUMN cover_url VARCHAR(255);
+
+--changeset gbabiuc:adding-unique-constraint-to-name-column-for-genres-table splitStatements:false
+Alter TABLE movie.genres
+    Add CONSTRAINT genres_uk
+        UNIQUE (name);
