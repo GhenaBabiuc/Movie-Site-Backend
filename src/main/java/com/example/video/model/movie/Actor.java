@@ -25,7 +25,7 @@ public class Actor {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "full_name")
+    @Column(name = "full_name", nullable = false)
     private String fullName;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
