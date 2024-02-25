@@ -37,14 +37,14 @@ public class Film {
     @Column(name = "release_date")
     private LocalDate releaseDate;
 
-    @Column(name = "director")
-    private String director;
-
     @Column(name = "rating", precision = 2, scale = 1)
     private Double rating;
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
+
+    @Column(name = "trailer_embed_link")
+    private String trailerEmbedLink;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "film_genres", schema = "movie", joinColumns = {@JoinColumn(name = "film_id")}, inverseJoinColumns = {@JoinColumn(name = "genre_id")})
@@ -53,4 +53,12 @@ public class Film {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "film_actors", schema = "movie", joinColumns = {@JoinColumn(name = "film_id")}, inverseJoinColumns = {@JoinColumn(name = "actor_id")})
     private Set<Actor> actors;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "film_directors", schema = "movie", joinColumns = {@JoinColumn(name = "film_id")}, inverseJoinColumns = {@JoinColumn(name = "director_id")})
+    private Set<Director> directors;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "film_writers", schema = "movie", joinColumns = {@JoinColumn(name = "film_id")}, inverseJoinColumns = {@JoinColumn(name = "writer_id")})
+    private Set<Writer> writers;
 }

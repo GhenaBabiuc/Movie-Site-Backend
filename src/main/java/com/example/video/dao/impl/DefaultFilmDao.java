@@ -29,9 +29,9 @@ public class DefaultFilmDao implements FilmDao {
         List<Predicate> predicates = FilmFilterUtil.buildsPredicates(criteriaBuilder, filmRoot, filmFilter);
 
         filmCriteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]));
-        filmCriteriaQuery.orderBy(criteriaBuilder.desc(filmRoot.get("rating")));
+        filmCriteriaQuery.orderBy(criteriaBuilder.desc(criteriaBuilder.coalesce(filmRoot.get("rating"), 0)));
 
-        return entityManager.createQuery(filmCriteriaQuery).getResultList();
+        return entityManager.createQuery(filmCriteriaQuery).setMaxResults(250).getResultList();
     }
 
     @Override
