@@ -1,12 +1,12 @@
 package com.example.video.controller;
 
 import com.example.video.model.FilmFilter;
+import com.example.video.model.PagedData;
 import com.example.video.model.movie.Film;
 import com.example.video.service.FilmService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RestController
 @RequestMapping("/films")
@@ -16,8 +16,10 @@ public class FilmController {
     private FilmService filmService;
 
     @GetMapping("/all")
-    public @ResponseBody List<Film> getAllVideos(FilmFilter filmFilter) {
-        return filmService.getAllVideos(filmFilter);
+    public @ResponseBody PagedData getAllVideos(@ModelAttribute FilmFilter filmFilter,
+                                                @RequestParam(required = false, defaultValue = "0") Integer start,
+                                                @RequestParam(required = false, defaultValue = "102") Integer limit) {
+        return filmService.getAllVideos(filmFilter, start, limit);
     }
 
     @GetMapping("/{id}")

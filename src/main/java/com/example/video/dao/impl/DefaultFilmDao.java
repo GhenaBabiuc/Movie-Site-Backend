@@ -21,7 +21,7 @@ public class DefaultFilmDao implements FilmDao {
     private EntityManager entityManager;
 
     @Override
-    public List<Film> getAllFilms(FilmFilter filmFilter) {
+    public List<Film> getAllFilms(FilmFilter filmFilter, Integer start, Integer limit) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Film> filmCriteriaQuery = criteriaBuilder.createQuery(Film.class);
         Root<Film> filmRoot = filmCriteriaQuery.from(Film.class);
@@ -29,9 +29,26 @@ public class DefaultFilmDao implements FilmDao {
         List<Predicate> predicates = FilmFilterUtil.buildsPredicates(criteriaBuilder, filmRoot, filmFilter);
 
         filmCriteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]));
-        filmCriteriaQuery.orderBy(criteriaBuilder.desc(criteriaBuilder.coalesce(filmRoot.get("rating"), 0)));
+        filmCriteriaQuery.orderBy(
+                criteriaBuilder.desc(criteriaBuilder.coalesce(filmRoot.get("rating"), 0)),
+                criteriaBuilder.asc(filmRoot.get("id"))
+        );
 
-        return entityManager.createQuery(filmCriteriaQuery).setMaxResults(250).getResultList();
+        return entityManager.createQuery(filmCriteriaQuery).setFirstResult(start).setMaxResults(limit).getResultList();
+    }
+
+    @Override
+    public Long countFilms(FilmFilter filmFilter) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> filmCriteriaQuery = criteriaBuilder.createQuery(Long.class);
+        Root<Film> filmRoot = filmCriteriaQuery.from(Film.class);
+        filmCriteriaQuery.select(criteriaBuilder.count(filmRoot));
+
+        List<Predicate> predicates = FilmFilterUtil.buildsPredicates(criteriaBuilder, filmRoot, filmFilter);
+
+        filmCriteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]));
+
+        return entityManager.createQuery(filmCriteriaQuery).getSingleResult();
     }
 
     @Override
