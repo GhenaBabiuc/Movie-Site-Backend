@@ -8,10 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.List;
 
 @Repository
@@ -23,16 +20,21 @@ public class DefaultFilmDao implements FilmDao {
     @Override
     public List<Film> getAllFilms(FilmFilter filmFilter, Integer start, Integer limit) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Film> filmCriteriaQuery = criteriaBuilder.createQuery(Film.class);
+        CriteriaQuery<Film> filmCriteriaQuery = criteriaBuilder.createQuery(Film.class).distinct(true);
         Root<Film> filmRoot = filmCriteriaQuery.from(Film.class);
 
         List<Predicate> predicates = FilmFilterUtil.buildsPredicates(criteriaBuilder, filmRoot, filmFilter);
 
+        if (filmFilter.getValueOrder() != null && !filmFilter.getValueOrder().isEmpty()) {
+            Path<Object> orderPath = filmRoot.get(filmFilter.getValueOrder());
+            if ("desc".equalsIgnoreCase(filmFilter.getOrder())) {
+                filmCriteriaQuery.orderBy(criteriaBuilder.desc(orderPath));
+            } else {
+                filmCriteriaQuery.orderBy(criteriaBuilder.asc(orderPath));
+            }
+        }
+
         filmCriteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]));
-        filmCriteriaQuery.orderBy(
-                criteriaBuilder.desc(criteriaBuilder.coalesce(filmRoot.get("rating"), 0)),
-                criteriaBuilder.asc(filmRoot.get("id"))
-        );
 
         return entityManager.createQuery(filmCriteriaQuery).setFirstResult(start).setMaxResults(limit).getResultList();
     }

@@ -110,3 +110,7 @@ CREATE TABLE IF NOT EXISTS movie.film_writers
 --changeset gbabiuc:add-trailer_embed_link-column-to-films-table splitStatements:false
 ALTER TABLE movie.films
     ADD trailer_embed_link VARCHAR(255);
+
+--changeset gbabiuc:set-default-rating-0-to-films-table splitStatements:false
+ALTER TABLE movie.films
+    ALTER COLUMN rating SET DEFAULT 0;
