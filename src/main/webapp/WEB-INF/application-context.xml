@@ -25,7 +25,6 @@
     <!-- This allow for dispatching requests to Controllers -->
     <mvc:annotation-driven/>
 
-
     <!-- This produces a container-managed EntityManagerFactory;
          rather than application-managed EntityManagerFactory as in case of LocalEntityManagerFactoryBean-->
     <bean id="entityManagerFactoryBean" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

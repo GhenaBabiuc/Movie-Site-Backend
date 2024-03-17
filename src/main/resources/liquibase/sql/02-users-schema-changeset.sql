@@ -32,3 +32,14 @@ CREATE TABLE users.user_roles
 INSERT INTO users.roles
 VALUES (1, 'ROLE_USER'),
        (2, 'ROLE_ADMIN');
+
+--changeset gbabiuc:create-user_watched_films-table splitStatements:false
+CREATE TABLE IF NOT EXISTS users.user_watched_films
+(
+    user_id    BIGINT NOT NULL,
+    film_id    BIGINT NOT NULL,
+    watched_on DATE   NOT NULL,
+    PRIMARY KEY (user_id, film_id),
+    FOREIGN KEY (user_id) REFERENCES users.users (id),
+    FOREIGN KEY (film_id) REFERENCES movie.films (id)
+);
