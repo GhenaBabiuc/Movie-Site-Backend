@@ -2,11 +2,10 @@ package com.example.service.movie;
 
 import com.example.model.movie.Film;
 import com.example.model.movie.FilmFilter;
-import com.example.model.movie.PagedData;
+import org.springframework.data.domain.Page;
 
 public interface FilmService {
-
-    PagedData getAllVideos(FilmFilter filmFilter, Integer start, Integer limit);
+    Page<Film> getAllVideos(FilmFilter filmFilter, Integer pageNumber, Integer pageSize);
 
     Film getFilmById(Long id);
 }

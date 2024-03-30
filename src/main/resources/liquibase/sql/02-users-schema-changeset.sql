@@ -43,3 +43,15 @@ CREATE TABLE IF NOT EXISTS users.user_watched_films
     FOREIGN KEY (user_id) REFERENCES users.users (id),
     FOREIGN KEY (film_id) REFERENCES movie.films (id)
 );
+
+--changeset gbabiuc:set-unique-username splitStatements:false
+ALTER TABLE users.users
+    ADD UNIQUE (username);
+
+--changeset gbabiuc:set-unique-role_name splitStatements:false
+ALTER TABLE users.roles
+    ADD UNIQUE (name);
+
+--changeset gbabiuc:add-email-column-to-users-table splitStatements:false
+ALTER TABLE users.users
+    ADD email VARCHAR(255) UNIQUE;
