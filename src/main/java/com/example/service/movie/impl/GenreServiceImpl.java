@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DefaultGenreService implements GenreService {
+public class GenreServiceImpl implements GenreService {
 
     @Resource
     private GenreRepository genreRepository;

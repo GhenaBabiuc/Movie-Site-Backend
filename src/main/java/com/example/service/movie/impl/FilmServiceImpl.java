@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class DefaultFilmService implements FilmService {
+public class FilmServiceImpl implements FilmService {
 
     @Resource
     private FilmRepository filmRepository;
