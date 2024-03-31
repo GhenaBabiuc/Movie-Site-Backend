@@ -50,8 +50,10 @@ public class FilmServiceImpl implements FilmService {
 
             if (filmFilter.getGenres() != null && !filmFilter.getGenres().isEmpty()) {
                 Join<Film, Genre> genreJoin = root.join("genres");
-                CriteriaBuilder.In<String> genreInClause = criteriaBuilder.in(genreJoin.get("name").as(String.class));
-                filmFilter.getGenres().forEach(genre -> genreInClause.value(genre.toLowerCase()));
+                CriteriaBuilder.In<String> genreInClause = criteriaBuilder.in(criteriaBuilder.lower(genreJoin.get("name")));
+                for (String genre : filmFilter.getGenres()) {
+                    genreInClause.value(genre.toLowerCase());
+                }
                 predicates.add(genreInClause);
             }
 
