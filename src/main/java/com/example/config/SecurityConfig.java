@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/films/**").permitAll()
                         .requestMatchers("/genres/**").permitAll()
-                        .requestMatchers("/user/info").authenticated()
+                        .requestMatchers("/user/films").authenticated()
                         .requestMatchers("/user/**").permitAll()
                         .anyRequest().denyAll()
                 )

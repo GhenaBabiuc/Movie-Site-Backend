@@ -31,10 +31,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Resource
     private PasswordEncoder passwordEncoder;
 
+    @Override
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
+    @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
@@ -52,6 +54,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         );
     }
 
+    @Override
     public User createNewUser(UserRegistrationDto userRegistrationDto) {
         User user = new User();
         user.setUsername(userRegistrationDto.getUsername());
