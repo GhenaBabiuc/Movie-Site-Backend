@@ -22,4 +22,3 @@ public class WatchedFilmId implements Serializable {
     @Column(name = "film_id")
     private Long filmId;
 }
-

@@ -30,4 +30,3 @@ public class WatchedFilm {
     @Column(name = "watched_on")
     private LocalDate watchedOn;
 }
-

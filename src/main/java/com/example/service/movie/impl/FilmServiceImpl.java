@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FilmServiceImpl implements FilmService {
@@ -65,6 +66,7 @@ public class FilmServiceImpl implements FilmService {
 
     @Override
     public Film getFilmById(Long id) {
-        return filmRepository.findById(id).get();
+        Optional<Film> optionalFilm = filmRepository.findById(id);
+        return optionalFilm.orElseGet(Film::new);
     }
 }
