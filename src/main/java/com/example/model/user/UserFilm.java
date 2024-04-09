@@ -15,18 +15,21 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user_watched_films", schema = "users")
-public class WatchedFilm {
+@Table(name = "user_films", schema = "users")
+public class UserFilm {
 
     @JsonIgnore
     @EmbeddedId
-    private WatchedFilmId id;
+    private UserFilmId id;
 
     @MapsId("filmId")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "film_id")
     private Film film;
 
-    @Column(name = "watched_on")
-    private LocalDate watchedOn;
+    @Column(name = "added_on")
+    private LocalDate addedOn;
+
+    @Column(name = "status")
+    private String status;
 }

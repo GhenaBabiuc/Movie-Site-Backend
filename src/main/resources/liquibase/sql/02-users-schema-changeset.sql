@@ -55,3 +55,15 @@ ALTER TABLE users.roles
 --changeset gbabiuc:add-email-column-to-users-table splitStatements:false
 ALTER TABLE users.users
     ADD email VARCHAR(255) UNIQUE;
+
+--changeset gbabiuc:rename-user_watched_films-to-user_films splitStatements:false
+ALTER TABLE users.user_watched_films
+    RENAME TO user_films;
+
+--changeset gbabiuc:add-status-column-to-user_films-table splitStatements:false
+ALTER TABLE users.user_films
+    add status VARCHAR(100) NOT NULL DEFAULT 'Watched';
+
+--changeset gbabiuc:rename-column-watched_on-from-user_films-to-added_on splitStatements:false
+ALTER TABLE users.user_films
+    RENAME COLUMN watched_on to added_on;
