@@ -20,7 +20,7 @@
         <liquibase.version>4.2.1</liquibase.version>
         <hibernate.version>5.6.15.Final</hibernate.version>
         <spring.version>6.0.18</spring.version>
-        <postgresql.version>42.5.4</postgresql.version>
+        <postgresql.version>42.5.5</postgresql.version>
         <lombok.version>1.18.26</lombok.version>
     </properties>
 
