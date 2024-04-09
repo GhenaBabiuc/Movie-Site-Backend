@@ -4,8 +4,10 @@ import com.example.model.movie.Film;
 import com.example.model.movie.FilmFilter;
 import org.springframework.data.domain.Page;
 
-public interface FilmService {
-    Page<Film> getAllVideos(FilmFilter filmFilter, Integer pageNumber, Integer pageSize);
+import java.util.Optional;
 
-    Film getFilmById(Long id);
+public interface FilmService {
+    Page<Film> getAll(FilmFilter filmFilter, Integer pageNumber, Integer pageSize);
+
+    Optional<Film> getById(Long id);
 }

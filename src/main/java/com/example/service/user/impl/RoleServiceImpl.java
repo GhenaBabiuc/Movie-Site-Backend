@@ -6,6 +6,8 @@ import com.example.service.user.RoleService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class RoleServiceImpl implements RoleService {
 
@@ -13,7 +15,7 @@ public class RoleServiceImpl implements RoleService {
     private RoleRepository roleRepository;
 
     @Override
-    public Role getUserRole() {
-        return roleRepository.findByName("ROLE_USER").get();
+    public Optional<Role> getUserRole() {
+        return roleRepository.findByName("ROLE_USER");
     }
 }

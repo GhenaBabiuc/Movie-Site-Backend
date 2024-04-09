@@ -22,12 +22,14 @@ public class UserFilmsListsController {
     @DeleteMapping("/delete/{filmId}")
     public ResponseEntity<?> deleteFilmForFilmLists(@PathVariable Long filmId, Principal principal) {
         watchedFilmService.deleteFilmForFilmLists(filmId, principal.getName());
+
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/add/{filmId}")
     public ResponseEntity<?> addUserFilm(@PathVariable Long filmId, Principal principal) {
         watchedFilmService.addUserFilm(filmId, principal.getName());
+
         return ResponseEntity.ok().build();
     }
 }

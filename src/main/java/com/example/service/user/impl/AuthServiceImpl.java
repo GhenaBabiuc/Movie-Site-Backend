@@ -1,22 +1,30 @@
 package com.example.service.user.impl;
 
+import com.example.model.user.Role;
+import com.example.model.user.User;
 import com.example.model.user.dto.AuthDto;
 import com.example.model.user.dto.UserRegistrationDto;
 import com.example.model.user.exception.AppError;
 import com.example.service.user.AuthService;
+import com.example.service.user.RoleService;
 import com.example.service.user.UserService;
 import com.example.service.user.util.JwtTokenUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -29,6 +37,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Resource
     private AuthenticationManager authenticationManager;
+
+    @Resource
+    private RoleService roleService;
+
+    @Lazy
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public ResponseEntity<?> createAuthToken(AuthDto authDto, HttpServletResponse response) {
@@ -110,6 +125,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<?> createNewUser(UserRegistrationDto userRegistrationDto) {
+        if (userRegistrationDto.getUsername() == null || userRegistrationDto.getUsername().isEmpty() ||
+                userRegistrationDto.getPassword() == null || userRegistrationDto.getPassword().isEmpty() ||
+                userRegistrationDto.getConfirmPassword() == null || userRegistrationDto.getConfirmPassword().isEmpty() ||
+                userRegistrationDto.getEmail() == null || userRegistrationDto.getEmail().isEmpty()) {
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "All fields must be filled"), HttpStatus.BAD_REQUEST);
+        }
+
         if (!userRegistrationDto.getPassword().equals(userRegistrationDto.getConfirmPassword())) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "The passwords don't match"), HttpStatus.BAD_REQUEST);
         }
@@ -122,7 +144,17 @@ public class AuthServiceImpl implements AuthService {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "A user with the specified email already exists"), HttpStatus.BAD_REQUEST);
         }
 
-        userService.createNewUser(userRegistrationDto);
+        User user = new User();
+        Optional<Role> optionalRole = roleService.getUserRole();
+
+        optionalRole.ifPresent(role -> {
+            user.setUsername(userRegistrationDto.getUsername());
+            user.setEmail(userRegistrationDto.getEmail());
+            user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
+            user.setRoles(Set.of(role));
+
+            userService.save(user);
+        });
 
         return ResponseEntity.ok().build();
     }

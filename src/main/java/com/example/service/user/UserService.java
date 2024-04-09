@@ -1,7 +1,6 @@
 package com.example.service.user;
 
 import com.example.model.user.User;
-import com.example.model.user.dto.UserRegistrationDto;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -14,5 +13,5 @@ public interface UserService {
 
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
-    User createNewUser(UserRegistrationDto userRegistrationDto);
+    void save(User user);
 }

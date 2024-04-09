@@ -26,7 +26,7 @@ public class FilmServiceImpl implements FilmService {
     private FilmRepository filmRepository;
 
     @Override
-    public Page<Film> getAllVideos(FilmFilter filmFilter, Integer pageNumber, Integer pageSize) {
+    public Page<Film> getAll(FilmFilter filmFilter, Integer pageNumber, Integer pageSize) {
         Sort sort = Sort.unsorted();
 
         if (filmFilter.getValueOrder() != null && !filmFilter.getValueOrder().isEmpty()) {
@@ -65,8 +65,7 @@ public class FilmServiceImpl implements FilmService {
     }
 
     @Override
-    public Film getFilmById(Long id) {
-        Optional<Film> optionalFilm = filmRepository.findById(id);
-        return optionalFilm.orElseGet(Film::new);
+    public Optional<Film> getById(Long id) {
+        return filmRepository.findById(id);
     }
 }

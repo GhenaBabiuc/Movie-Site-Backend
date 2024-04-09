@@ -1,7 +1,7 @@
 package com.example.service.movie.impl;
 
-import com.example.repository.movie.GenreRepository;
 import com.example.model.movie.Genre;
+import com.example.repository.movie.GenreRepository;
 import com.example.service.movie.GenreService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class GenreServiceImpl implements GenreService {
     private GenreRepository genreRepository;
 
     @Override
-    public List<Genre> getAllGenres() {
+    public List<Genre> getAll() {
         return genreRepository.findAll();
     }
 }

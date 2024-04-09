@@ -5,6 +5,7 @@ import com.example.model.movie.FilmFilter;
 import com.example.service.movie.FilmService;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,14 +16,16 @@ public class FilmController {
     private FilmService filmService;
 
     @GetMapping("/all")
-    public @ResponseBody Page<Film> getAllVideos(@ModelAttribute FilmFilter filmFilter,
-                                                 @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
-                                                 @RequestParam(required = false, defaultValue = "102") Integer pageSize) {
-        return filmService.getAllVideos(filmFilter, pageNumber, pageSize);
+    public ResponseEntity<Page<Film>> getAll(@ModelAttribute FilmFilter filmFilter,
+                                             @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
+                                             @RequestParam(required = false, defaultValue = "102") Integer pageSize) {
+        return ResponseEntity.ok(filmService.getAll(filmFilter, pageNumber, pageSize));
     }
 
-    @GetMapping("/{id}")
-    public @ResponseBody Film getFilmById(@PathVariable Long id) {
-        return filmService.getFilmById(id);
+    @GetMapping("/{filmId}")
+    public ResponseEntity<Film> getById(@PathVariable Long filmId) {
+        return filmService.getById(filmId).map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+
     }
 }

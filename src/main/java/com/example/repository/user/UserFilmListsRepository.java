@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface WatchedFilmRepository extends JpaRepository<WatchedFilm, WatchedFilmId> {
+public interface UserFilmListsRepository extends JpaRepository<WatchedFilm, WatchedFilmId> {
     List<WatchedFilm> findByIdUserId(Long userId);
 }
 
