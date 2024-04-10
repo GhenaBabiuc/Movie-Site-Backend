@@ -67,6 +67,15 @@ public class JwtTokenUtils {
         }
     }
 
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(secret).build().parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
     public String getUsername(String token) {
         return getAllClaimsFromToken(token).getSubject();
     }

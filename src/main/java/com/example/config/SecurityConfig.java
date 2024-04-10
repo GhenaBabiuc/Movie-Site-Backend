@@ -51,7 +51,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user-films-lists/all", "/user-films-lists/delete/{filmId}", "/user-films-lists/add/{filmId}").authenticated()
-                        .requestMatchers("/user/auth", "/user/refresh", "/user/logout", "/user/registration").permitAll()
+                        .requestMatchers("/user/auth", "/user/refresh", "/user/logout", "/user/registration", "/user/check-auth").permitAll()
                         .requestMatchers("/films/**").permitAll()
                         .requestMatchers("/genres/**").permitAll()
                         .anyRequest().denyAll()

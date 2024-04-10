@@ -158,4 +158,21 @@ public class AuthServiceImpl implements AuthService {
 
         return ResponseEntity.ok().build();
     }
+
+    @Override
+    public Boolean checkAuth(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String authToken = null;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("auth_token".equals(cookie.getName())) {
+                    authToken = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        return authToken != null && jwtTokenUtils.validateToken(authToken);
+    }
 }

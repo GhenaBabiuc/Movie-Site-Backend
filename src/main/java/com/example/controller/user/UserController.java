@@ -7,10 +7,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -37,5 +34,10 @@ public class UserController {
     @PostMapping("/registration")
     public ResponseEntity<?> createNewUser(@RequestBody UserRegistrationDto userRegistrationDto) {
         return authService.createNewUser(userRegistrationDto);
+    }
+
+    @GetMapping("/check-auth")
+    public ResponseEntity<?> checkAuth(HttpServletRequest request) {
+        return ResponseEntity.ok(authService.checkAuth(request));
     }
 }

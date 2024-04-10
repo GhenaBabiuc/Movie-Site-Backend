@@ -14,4 +14,6 @@ public interface AuthService {
     ResponseEntity<?> logout(HttpServletResponse response);
 
     ResponseEntity<?> createNewUser(UserRegistrationDto userRegistrationDto);
+
+    Boolean checkAuth(HttpServletRequest request);
 }
