@@ -1,7 +1,7 @@
 package com.example.service.movie.impl;
 
 import com.example.model.movie.Film;
-import com.example.model.movie.FilmFilter;
+import com.example.model.movie.filter.FilmFilter;
 import com.example.model.movie.Genre;
 import com.example.repository.movie.FilmRepository;
 import com.example.service.movie.FilmService;

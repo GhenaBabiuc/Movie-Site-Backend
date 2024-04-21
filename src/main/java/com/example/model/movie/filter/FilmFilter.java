@@ -1,4 +1,4 @@
-package com.example.model.movie;
+package com.example.model.movie.filter;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

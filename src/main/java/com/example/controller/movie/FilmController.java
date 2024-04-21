@@ -1,6 +1,6 @@
 package com.example.controller.movie;
 
-import com.example.model.movie.FilmFilter;
+import com.example.model.movie.filter.FilmFilter;
 import com.example.model.movie.dto.FilmDataDto;
 import com.example.model.user.UserFilm;
 import com.example.service.movie.FilmService;

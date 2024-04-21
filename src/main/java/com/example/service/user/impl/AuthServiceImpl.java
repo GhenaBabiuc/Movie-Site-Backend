@@ -87,7 +87,7 @@ public class AuthServiceImpl implements AuthService {
             }
         }
 
-        if (refreshToken == null || !jwtTokenUtils.validateRefreshToken(refreshToken)) {
+        if (refreshToken == null || !jwtTokenUtils.validateToken(refreshToken)) {
             return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(), "Invalid refresh token"), HttpStatus.UNAUTHORIZED);
         }
 

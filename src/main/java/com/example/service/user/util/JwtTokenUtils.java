@@ -58,15 +58,6 @@ public class JwtTokenUtils {
                 .compact();
     }
 
-    public Boolean validateRefreshToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(secret).build().parseClaimsJws(token);
-            return true;
-        } catch (JwtException e) {
-            return false;
-        }
-    }
-
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(secret).build().parseClaimsJws(token);

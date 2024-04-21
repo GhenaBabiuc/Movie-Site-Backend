@@ -1,7 +1,7 @@
 package com.example.service.movie;
 
 import com.example.model.movie.Film;
-import com.example.model.movie.FilmFilter;
+import com.example.model.movie.filter.FilmFilter;
 import org.springframework.data.domain.Page;
 
 import java.util.Optional;
