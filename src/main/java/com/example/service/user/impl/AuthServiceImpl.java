@@ -8,6 +8,7 @@ import com.example.model.user.exception.AppError;
 import com.example.service.user.AuthService;
 import com.example.service.user.RoleService;
 import com.example.service.user.UserService;
+import com.example.service.user.util.EmailService;
 import com.example.service.user.util.JwtTokenUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
@@ -40,6 +41,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Resource
     private RoleService roleService;
+
+    @Resource
+    private EmailService emailService;
 
     @Lazy
     @Resource
@@ -155,6 +159,10 @@ public class AuthServiceImpl implements AuthService {
 
             userService.save(user);
         });
+
+        String activationToken = jwtTokenUtils.generateTokenWithClaims(user.getId().toString());
+        String activationLink = "http://localhost:3000/activate/" + activationToken;
+        emailService.sendActivationEmail(user.getEmail(), activationLink);
 
         return ResponseEntity.ok().build();
     }

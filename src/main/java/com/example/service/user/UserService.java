@@ -14,4 +14,6 @@ public interface UserService {
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
     void save(User user);
+
+    void activateUser(String userId);
 }

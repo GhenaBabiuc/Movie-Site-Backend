@@ -67,3 +67,7 @@ ALTER TABLE users.user_films
 --changeset gbabiuc:rename-column-watched_on-from-user_films-to-added_on splitStatements:false
 ALTER TABLE users.user_films
     RENAME COLUMN watched_on to added_on;
+
+--changeset gbabiuc:add-enabled-column-to-user-table splitStatements:false
+ALTER TABLE users.users
+    ADD enabled BOOLEAN DEFAULT FALSE NOT NULL;
