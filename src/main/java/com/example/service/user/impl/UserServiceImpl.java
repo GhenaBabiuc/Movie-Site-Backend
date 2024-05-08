@@ -64,8 +64,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public void activateUser(String userId) {
-        User user = userRepository.findById(Long.parseLong(userId)).orElseThrow(() -> new RuntimeException("User not found"));
+    public void activateUser(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
         user.setEnabled(true);
         userRepository.save(user);
     }

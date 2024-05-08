@@ -54,8 +54,8 @@ public class UserController {
     @PostMapping("/activate")
     public ResponseEntity<?> activateAccount(@RequestBody String token) {
         try {
-            String userId = jwtTokenUtils.extractUserId(token);
-            userService.activateUser(userId);
+            String username = jwtTokenUtils.getUsername(token);
+            userService.activateUser(username);
             return ResponseEntity.ok("Account activated successfully.");
         } catch (JwtException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token.");

@@ -15,5 +15,5 @@ public interface UserService {
 
     void save(User user);
 
-    void activateUser(String userId);
+    void activateUser(String username);
 }

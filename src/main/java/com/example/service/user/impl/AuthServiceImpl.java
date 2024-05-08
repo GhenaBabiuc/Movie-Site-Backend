@@ -160,7 +160,7 @@ public class AuthServiceImpl implements AuthService {
             userService.save(user);
         });
 
-        String activationToken = jwtTokenUtils.generateTokenWithClaims(user.getId().toString());
+        String activationToken = jwtTokenUtils.generateTokenWithClaims(user.getUsername());
         String activationLink = "http://localhost:3000/activate/" + activationToken;
         emailService.sendActivationEmail(user.getEmail(), activationLink);
 
