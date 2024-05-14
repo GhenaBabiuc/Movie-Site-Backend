@@ -10,10 +10,13 @@ import com.example.service.user.RoleService;
 import com.example.service.user.UserService;
 import com.example.service.user.util.EmailService;
 import com.example.service.user.util.JwtTokenUtils;
+import io.jsonwebtoken.JwtException;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +27,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
 public class AuthServiceImpl implements AuthService {
+
+    private static final Logger log = LoggerFactory.getLogger(EmailService.class);
 
     @Resource
     private UserService userService;
@@ -156,6 +162,7 @@ public class AuthServiceImpl implements AuthService {
             user.setEmail(userRegistrationDto.getEmail());
             user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
             user.setRoles(Set.of(role));
+            user.setRegistrationDate(LocalDate.now());
 
             userService.save(user);
         });
@@ -182,5 +189,38 @@ public class AuthServiceImpl implements AuthService {
         }
 
         return authToken != null && jwtTokenUtils.validateToken(authToken);
+    }
+
+    @Override
+    public ResponseEntity<?> activateAccount(String token) {
+        try {
+            String username = jwtTokenUtils.getUsername(token);
+            userService.activateUser(username);
+
+            return ResponseEntity.ok("Account activated successfully.");
+        } catch (JwtException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token.");
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> updateUserPassword(String password, String username) {
+        Optional<User> optionalUser = userService.findByUsername(username);
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User user = optionalUser.get();
+        user.setPassword(passwordEncoder.encode(password));
+        try {
+            userService.save(user);
+            log.info("Password updated successfully for user: {}", username);
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error("Failed to update password for user: {}", username, e);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

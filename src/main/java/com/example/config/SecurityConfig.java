@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user-films-lists/all", "/user-films-lists/delete/{filmId}", "/user-films-lists/add/{filmId}").authenticated()
+                        .requestMatchers("/user-films-lists/all", "/user-films-lists/delete/{filmId}", "/user-films-lists/add/{filmId}", "/user/data", "/user/update-password").authenticated()
                         .requestMatchers("/user/auth", "/user/refresh", "/user/logout", "/user/registration", "/user/check-auth", "/user/activate").permitAll()
                         .requestMatchers("/films/**").permitAll()
                         .requestMatchers("/genres/**").permitAll()

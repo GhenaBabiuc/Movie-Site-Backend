@@ -16,4 +16,8 @@ public interface AuthService {
     ResponseEntity<?> createNewUser(UserRegistrationDto userRegistrationDto);
 
     Boolean checkAuth(HttpServletRequest request);
+
+    ResponseEntity<?> activateAccount(String token);
+
+    ResponseEntity<?> updateUserPassword(String password, String username);
 }

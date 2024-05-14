@@ -4,14 +4,13 @@ import com.example.model.user.dto.AuthDto;
 import com.example.model.user.dto.UserRegistrationDto;
 import com.example.service.user.AuthService;
 import com.example.service.user.UserService;
-import com.example.service.user.util.JwtTokenUtils;
-import io.jsonwebtoken.JwtException;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/user")
@@ -22,9 +21,6 @@ public class UserController {
 
     @Resource
     private UserService userService;
-
-    @Resource
-    private JwtTokenUtils jwtTokenUtils;
 
     @PostMapping("/auth")
     public ResponseEntity<?> createAuthToken(@RequestBody AuthDto AuthDto, HttpServletResponse response) {
@@ -53,12 +49,23 @@ public class UserController {
 
     @PostMapping("/activate")
     public ResponseEntity<?> activateAccount(@RequestBody String token) {
-        try {
-            String username = jwtTokenUtils.getUsername(token);
-            userService.activateUser(username);
-            return ResponseEntity.ok("Account activated successfully.");
-        } catch (JwtException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token.");
-        }
+        return authService.activateAccount(token);
+    }
+
+    @GetMapping("/data")
+    public ResponseEntity<?> getUserData(Principal principal) {
+        return userService.findByUsername(principal.getName())
+                .map(user -> {
+                    user.setPassword(null);
+
+                    return user;
+                })
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/update-password")
+    public ResponseEntity<?> updateUserPassword(@RequestBody String password, Principal principal) {
+        return authService.updateUserPassword(password, principal.getName());
     }
 }
