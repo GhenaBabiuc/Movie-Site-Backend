@@ -71,3 +71,7 @@ ALTER TABLE users.user_films
 --changeset gbabiuc:add-enabled-column-to-user-table splitStatements:false
 ALTER TABLE users.users
     ADD enabled BOOLEAN DEFAULT FALSE NOT NULL;
+
+--changeset gbabiuc:add-registration_date-column-to-user-table splitStatements:false
+ALTER TABLE users.users
+    ADD registration_date DATE NOT NULL DEFAULT CURRENT_DATE;
