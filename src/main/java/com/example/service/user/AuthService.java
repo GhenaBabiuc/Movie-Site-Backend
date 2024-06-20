@@ -20,4 +20,8 @@ public interface AuthService {
     ResponseEntity<?> activateAccount(String token);
 
     ResponseEntity<?> updateUserPassword(String password, String username);
+
+    ResponseEntity<?> sendPasswordResetEmail(String email);
+
+    ResponseEntity<?> resetPassword(String token, String newPassword);
 }

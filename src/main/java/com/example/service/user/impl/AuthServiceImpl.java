@@ -223,4 +223,38 @@ public class AuthServiceImpl implements AuthService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @Override
+    public ResponseEntity<?> sendPasswordResetEmail(String email) {
+        Optional<User> optionalUser = userService.findByEmail(email);
+        if (optionalUser.isEmpty()) {
+            return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(), "User with the specified email not found"), HttpStatus.NOT_FOUND);
+        }
+
+        User user = optionalUser.get();
+        String resetToken = jwtTokenUtils.generateTokenWithClaims(user.getUsername());
+        String resetLink = "http://localhost:3000/reset-password/" + resetToken;
+        emailService.sendActivationEmail(user.getEmail(), resetLink);
+
+        return ResponseEntity.ok("Password reset email sent.");
+    }
+
+    @Override
+    public ResponseEntity<?> resetPassword(String token, String newPassword) {
+        try {
+            String username = jwtTokenUtils.getUsername(token);
+            Optional<User> optionalUser = userService.findByUsername(username);
+            if (optionalUser.isEmpty()) {
+                return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(), "User not found"), HttpStatus.NOT_FOUND);
+            }
+
+            User user = optionalUser.get();
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userService.save(user);
+
+            return ResponseEntity.ok("Password reset successfully.");
+        } catch (JwtException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token.");
+        }
+    }
 }
